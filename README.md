@@ -26,3 +26,6 @@ bash backup.sh backup
 ```bash
 bash backup.sh restore
 ```
+
+>只有第一次执行时才是全量备份，接下基于全量进行增量备份。
+>a节点将在/root/.backup下生成备份数据，b节点将在/root/.restore生成接收的备份数据
