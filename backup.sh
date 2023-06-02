@@ -9,6 +9,12 @@ appendback=mysql_app_backup_$(date +'%F_%s')
 remote='192.168.10.213'
 remote_dir=/root/.restore
 
+netstat  -tpln | grep 330[6] &>/dev/null
+if [ $? -eq 0 ];then
+    echo "say goodbye"
+    exit 3
+fi
+
 
 mkdir -p $backdir
 mkdir -p $remote_dir
