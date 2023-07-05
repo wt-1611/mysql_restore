@@ -1,19 +1,14 @@
 #!/bin/bash
-user=root
-passwd='IDDORHwcCOtVhSt@12Whc'
+user=sqladm
+passwd='{{ admpass }}'
 host=localhost
 tools=/root/xtrbackup
 backdir=/root/.backup
 fullback=mysql_full_backup
 appendback=mysql_app_backup_$(date +'%F_%s')
-remote='192.168.10.213'
+remote='{{ lip }}'
 remote_dir=/root/.restore
 
-netstat  -tpln | grep 330[6] &>/dev/null
-if [ $? -eq 0 ];then
-    echo "say goodbye"
-    exit 3
-fi
 
 
 mkdir -p $backdir
@@ -38,6 +33,17 @@ echo_warn() {
 
 
 mysql_backup(){
+
+
+	ss -tpln | grep 330[6] &>/dev/null
+	if [ $? -ne 0 ];then
+		echo "mysql is not running."
+		exit 3
+	fi
+
+
+
+
     cd /root
 
     ssh root@$remote "mkdir -p $remote_dir"
@@ -103,7 +109,7 @@ mysql_restore(){
    
 
         
-    elif [ -n $append ];then
+    elif [ -n "$append" ];then
          tar xf $append 
          app_name=$(echo $append|awk -F'.' '{print $1}')
          
